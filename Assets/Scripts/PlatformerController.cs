@@ -63,9 +63,12 @@ public class PlatformerController : MonoBehaviour
 			animator.SetBool("running", false);
 		}
 
+		rigidbody.MovePosition(rigidbody.position + move);
+
 		leanRight = false;
 		leanLeft = false;
-		rigidbody.MovePosition(rigidbody.position + move);
+		// Actually returns legit and pretty accurate collision points,
+		// but I should do my own raycasts on these points to figure out what to do
 		var results = new RaycastHit2D[20];
 		var hits = rigidbody.Cast(Vector2.down, results, 0);
 		for (var i = 0; i < hits; i++) {
