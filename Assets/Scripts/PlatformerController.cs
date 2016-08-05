@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Threading;
 
-public class CharacterController : MonoBehaviour
+public class PlatformerController : MonoBehaviour
 {
 	public float speed;
 	public float jumpPower;
@@ -13,8 +13,10 @@ public class CharacterController : MonoBehaviour
 	private new Rigidbody2D rigidbody;
 	private Animator animator;
 
-	public bool grounded;
-	public float jumpVelocity;
+	[ReadOnly] public bool grounded;
+	[ReadOnly] public bool leanRight;
+	[ReadOnly] public bool leanLeft;
+	[ReadOnly] public float jumpVelocity;
 
 	void Start ()
 	{
@@ -26,13 +28,9 @@ public class CharacterController : MonoBehaviour
 	{
 		var hit = Physics2D.Linecast(transform.position, groundCheck.position, LayerMask.GetMask("Ground"));
 		grounded = jumpVelocity <= 0 && hit.collider != null;
-		Debug.DrawLine(transform.position, groundCheck.position, grounded ? Color.green : Color.red);
+		//Debug.DrawLine(transform.position, groundCheck.position, grounded ? Color.green : Color.red);
 
 		var move = new Vector2();
-		if (Input.GetKey(KeyCode.Z)) {
-			jumpVelocity = jumpPower;
-			grounded = false;
-		}
 		if (!grounded) {
 			move += Vector2.up * Time.fixedDeltaTime * jumpVelocity;
 			jumpVelocity -= gravity * Time.fixedDeltaTime;
@@ -43,20 +41,42 @@ public class CharacterController : MonoBehaviour
 			animator.SetBool("grounded", false);
 		}
 		else {
+			jumpVelocity = 0;
+			if (Input.GetKey(KeyCode.Z)) {
+				jumpVelocity = jumpPower;
+				grounded = false;
+			}
+			rigidbody.position = hit.point - Vector2.up * 0.15f - (Vector2)groundCheck.localPosition;
 			animator.SetBool("grounded", true);
 		}
 		if (Input.GetKey(KeyCode.RightArrow)) {
-			move += Vector2.right * Time.fixedDeltaTime * speed;
+			if (!leanRight)
+				move += Vector2.right * Time.fixedDeltaTime * speed;
 			sprite.flipX = true;
 			animator.SetBool("running", true);
 		} else if (Input.GetKey(KeyCode.LeftArrow)) {
-			move += Vector2.left * Time.fixedDeltaTime * speed;
+			if (!leanLeft)
+				move += Vector2.left * Time.fixedDeltaTime * speed;
 			sprite.flipX = false;
 			animator.SetBool("running", true);
 		} else {
 			animator.SetBool("running", false);
 		}
 
+		leanRight = false;
+		leanLeft = false;
 		rigidbody.MovePosition(rigidbody.position + move);
+		var results = new RaycastHit2D[20];
+		var hits = rigidbody.Cast(Vector2.down, results, 0);
+		for (var i = 0; i < hits; i++) {
+			//Debug.DrawLine(transform.position, results[i].point, Color.blue);
+			var normal = (results[i].point - rigidbody.position).normalized;
+			if (Vector2.Dot(normal, Vector2.up) > 0.9f)
+				jumpVelocity = Mathf.Min(jumpVelocity, 0);
+
+			var dot = Vector2.Dot(normal, Vector2.right);
+			leanRight = dot > 0.5f;
+			leanLeft = dot < -0.5f;
+		}
 	}
 }
