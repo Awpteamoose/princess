@@ -30,19 +30,20 @@ public class PlatformerController : MonoBehaviour
 		groundMask = LayerMask.GetMask("Ground");
 	}
 
-	private void CheckCollision(Vector2 side, Vector2 originOffset, float length, out RaycastHit2D hit) {
+	private void CheckCollision(Vector2 side, Vector2 originOffset, float length, out RaycastHit2D hit, ref PlatformData pdata) {
 		rcStart = rigidbody.position + originOffset;
 		rcEnd = rcStart + side * length;
 
 		hit = Physics2D.Linecast(rcStart, rcEnd, groundMask);
 		Debug.DrawLine(rcStart, rcEnd, Color.cyan);
 		if (!hit) return;
-		rigidbody.position += (Vector2.Distance(rcEnd, hit.point) - 0.025f) * -side;
+		pdata = hit.transform.GetComponent<PlatformData>();
 	}
 
-	private void SideCollision(Vector2 side, Vector2 originOffset, ref bool constrained, out RaycastHit2D hit) {
-		CheckCollision(side, originOffset, (p.width * 0.5f) + 0.05f, out hit);
-		if (!hit) return;
+	private void SideCollision(Vector2 side, Vector2 originOffset, ref bool constrained, out RaycastHit2D hit, ref PlatformData pdata) {
+		CheckCollision(side, originOffset, (p.width * 0.5f) + 0.05f, out hit, ref pdata);
+		if (!hit || pdata.jumpThrough) return;
+		rigidbody.position += (Vector2.Distance(rcEnd, hit.point) - 0.025f) * -side;
 		var angle = Vector2.Angle(Vector2.up, hit.normal);
 		constrained = angle > maxSlope;
 	}
@@ -53,25 +54,31 @@ public class PlatformerController : MonoBehaviour
 		grounded = false;
 		var move = new Vector2();
 
-		SideCollision(Vector2.left, p.topMiddle, ref col.left, out col.leftHit);
-		SideCollision(Vector2.left, p.topMiddle * 0.5f, ref col.left, out col.leftHit);
-		SideCollision(Vector2.left, Vector2.zero, ref col.left, out col.leftHit);
-		SideCollision(Vector2.left, -p.topMiddle * 0.5f, ref col.left, out col.leftHit);
+		SideCollision(Vector2.left, p.topMiddle, ref col.left, out col.leftHit, ref col.pLeft);
+		SideCollision(Vector2.left, p.topMiddle * 0.5f, ref col.left, out col.leftHit, ref col.pLeft);
+		SideCollision(Vector2.left, Vector2.zero, ref col.left, out col.leftHit, ref col.pLeft);
+		SideCollision(Vector2.left, -p.topMiddle * 0.5f, ref col.left, out col.leftHit, ref col.pLeft);
 
-		SideCollision(Vector2.right, p.topMiddle, ref col.right, out col.rightHit);
-		SideCollision(Vector2.right, p.topMiddle * 0.5f, ref col.right, out col.rightHit);
-		SideCollision(Vector2.right, Vector2.zero, ref col.right, out col.rightHit);
-		SideCollision(Vector2.right, -p.topMiddle * 0.5f, ref col.right, out col.rightHit);
+		SideCollision(Vector2.right, p.topMiddle, ref col.right, out col.rightHit, ref col.pRight);
+		SideCollision(Vector2.right, p.topMiddle * 0.5f, ref col.right, out col.rightHit, ref col.pRight);
+		SideCollision(Vector2.right, Vector2.zero, ref col.right, out col.rightHit, ref col.pRight);
+		SideCollision(Vector2.right, -p.topMiddle * 0.5f, ref col.right, out col.rightHit, ref col.pRight);
 
-		CheckCollision(Vector2.up, Vector2.zero, (p.height * 0.5f) + 0.05f, out col.topHit);
-		CheckCollision(Vector2.down, Vector2.zero, (p.height * 0.5f) + 0.05f, out col.bottomHit);
+		CheckCollision(Vector2.up, p.topMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.topHit, ref col.pTop);
+		if (col.topHit && !col.pTop.jumpThrough) {
+			rigidbody.position += (Vector2.Distance(rcEnd, col.topHit.point) - 0.025f) * - Vector2.down;
+		}
+
+		CheckCollision(Vector2.down, p.bottomMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.bottomHit, ref col.pBottom);
+		if (col.bottomHit && (!col.pBottom.jumpThrough || jumpVelocity < 0))
+			rigidbody.position += (Vector2.Distance(rcEnd, col.bottomHit.point) - 0.05f) * - Vector2.down;
 
 		if (col.bottomHit) {
 			var angle = Vector2.Angle(Vector2.up, col.bottomHit.normal);
 			grounded = jumpVelocity <= 0 && angle <= maxSlope;
 		}
 
-		if (col.topHit) {
+		if (col.topHit && !col.pTop.jumpThrough) {
 			jumpVelocity = Mathf.Min(jumpVelocity, 0);
 		} else if (grounded) {
 			jumpVelocity = 0;
@@ -113,6 +120,7 @@ public class PlatformerController : MonoBehaviour
 
 	private struct CollisionData {
 		public bool left, right, top, bottom;
+		public PlatformData pLeft, pRight, pTop, pBottom;
 		public RaycastHit2D leftHit, rightHit, topHit, bottomHit;
 
 		public void Reset() {
@@ -120,6 +128,11 @@ public class PlatformerController : MonoBehaviour
 			right = false;
 			top = false;
 			bottom = false;
+
+			pLeft = null;
+			pRight = null;
+			pTop = null;
+			pBottom = null;
 		}
 	}
 
