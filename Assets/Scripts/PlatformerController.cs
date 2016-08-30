@@ -70,7 +70,7 @@ public class PlatformerController : MonoBehaviour
 		}
 
 		CheckCollision(Vector2.down, p.bottomMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.bottomHit, ref col.pBottom);
-		if (col.bottomHit && (!col.pBottom.jumpThrough || jumpVelocity < 0))
+		if (col.bottomHit && (!col.pBottom.jumpThrough || jumpVelocity <= 0))
 			rigidbody.position += (Vector2.Distance(rcEnd, col.bottomHit.point) - 0.05f) * - Vector2.down;
 
 		if (col.bottomHit) {

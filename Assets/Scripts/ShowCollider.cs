@@ -43,6 +43,7 @@ public class ShowCollider : MonoBehaviour {
 			Gizmos.DrawLine(points[i], points[i+1]);
 		}
 		Gizmos.DrawLine(points[3], points[0]);
+		Gizmos.DrawIcon(transform.position, "Square.png", true);
 	}
 
 }
