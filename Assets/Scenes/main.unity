@@ -879,7 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: -0.175, y: 0}
+  speed: {x: -0.15, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &372691327
@@ -956,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: -0.1, y: 0}
+  speed: {x: 0.075, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &395701056
@@ -1640,7 +1640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: -0.15, y: 0}
+  speed: {x: -0.1, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &648487906
@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 1.5, y: 0}
+  speed: {x: -0.25, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &776116428
@@ -4323,7 +4323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: -0.125, y: 0}
+  speed: {x: -0.05, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &1695330711
@@ -5355,7 +5355,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.4666667, g: 0.5411765, b: 0.60784316, a: 1}
+  m_BackGroundColor: {r: 0.34509805, g: 0.40784317, b: 0.43137258, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -5740,7 +5740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f141f51d49b3644a54e8dc1d6ed4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: -0.075, y: 0}
+  speed: {x: 0.05, y: 0}
   tileX: 1
   tileY: 0
 --- !u!212 &2031695632
