@@ -28,4 +28,5 @@ sysinfo.txt
 [Dd]esktop.ini
 
 # Local tool config
+out/
 exporter_config.json
