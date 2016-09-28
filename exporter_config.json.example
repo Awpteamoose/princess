@@ -1,0 +1,8 @@
+{
+	"aseprite": "D:\\Games\\Steam\\steamapps\\common\\Aseprite\\Aseprite.exe",
+	"output": "out",
+	"sprites": [
+		"WIP sprites\\princess",
+		"WIP sprites\\monsterall"
+	]
+}

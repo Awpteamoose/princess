@@ -26,3 +26,6 @@ sysinfo.txt
 *UnityVS*
 [Tt]humbs.db
 [Dd]esktop.ini
+
+# Local tool config
+exporter_config.json
