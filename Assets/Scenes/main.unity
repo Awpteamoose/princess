@@ -1789,6 +1789,8 @@ MonoBehaviour:
   gravity: 20
   maxSlope: 45
   sprite: {fileID: 848118516}
+  leftSide: {fileID: 1308247268}
+  rightSide: {fileID: 1952829663}
 --- !u!50 &701168231
 Rigidbody2D:
   serializedVersion: 2
@@ -3564,6 +3566,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1308247266}
   - 61: {fileID: 1308247267}
+  - 50: {fileID: 1308247268}
   m_Layer: 0
   m_Name: left
   m_TagString: Untagged
@@ -3598,6 +3601,23 @@ BoxCollider2D:
   m_Offset: {x: -0.375, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1.5}
+--- !u!50 &1308247268
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308247265}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1328762503
 Prefab:
   m_ObjectHideFlags: 0
@@ -5220,6 +5240,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1952829661}
   - 61: {fileID: 1952829662}
+  - 50: {fileID: 1952829663}
   m_Layer: 0
   m_Name: right
   m_TagString: Untagged
@@ -5254,6 +5275,23 @@ BoxCollider2D:
   m_Offset: {x: 0.375, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1.5}
+--- !u!50 &1952829663
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1952829660}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1952965507
 Prefab:
   m_ObjectHideFlags: 0

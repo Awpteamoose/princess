@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using System.Threading;
 
 public class PlatformerController : MonoBehaviour
 {
@@ -10,6 +8,7 @@ public class PlatformerController : MonoBehaviour
 	public float gravity;
 	public float maxSlope;
 	public SpriteRenderer sprite;
+	public Rigidbody2D leftSide, rightSide;
 
 	private new Rigidbody2D rigidbody;
 	private Animator animator;
@@ -40,12 +39,42 @@ public class PlatformerController : MonoBehaviour
 		pdata = hit.transform.GetComponent<PlatformData>();
 	}
 
-	private void SideCollision(Vector2 side, Vector2 originOffset, ref bool constrained, out RaycastHit2D hit, ref PlatformData pdata) {
-		CheckCollision(side, originOffset, (p.width * 0.5f) + 0.05f, out hit, ref pdata);
-		if (!hit || pdata.jumpThrough) return;
-		rigidbody.position += (Vector2.Distance(rcEnd, hit.point) - 0.025f) * -side;
-		var angle = Vector2.Angle(Vector2.up, hit.normal);
-		constrained = angle > maxSlope;
+	private void SideCollision(Vector2 side, Rigidbody2D sideBody, out bool constrained, out RaycastHit2D collision, ref PlatformData pdata) {
+		var results = new RaycastHit2D[20];
+		var hits = sideBody.Cast(side, results, 0);
+		var maxPenetration = 0f;
+
+		// Assume there's no collision by default
+		constrained = false;
+		collision = results[0];
+		pdata = null;
+
+		for (var i = 0; i < hits; i++) {
+			var hit = results[i];
+
+			// Ignore non-ground colliders
+			if (hit.transform.gameObject.layer != LayerMask.NameToLayer("Ground")) continue;
+
+			var data = hit.transform.GetComponent<PlatformData>();
+			// Ignore jump-through platforms in side collisions
+			if (data.jumpThrough) continue;
+
+			// Ignore legit slopes
+			var angle = Vector2.Angle(Vector2.up, hit.normal);
+			if (angle < maxSlope) continue;
+
+			// Only care about the most penetrating collision
+			var sideCollider = sideBody.GetComponent<BoxCollider2D>();
+			var colliderEdge = sideBody.position.x + sideCollider.offset.x + (side.x * sideCollider.size.x * 0.5f);
+			var penetration = Mathf.Abs(colliderEdge - hit.point.x);
+			if (penetration < maxPenetration) continue;
+			maxPenetration = penetration;
+
+			constrained = true;
+			collision = hit;
+			pdata = data;
+		}
+		rigidbody.position += maxPenetration * -side;
 	}
 
 	private void FixedUpdate () {
@@ -54,15 +83,8 @@ public class PlatformerController : MonoBehaviour
 		grounded = false;
 		var move = new Vector2();
 
-		SideCollision(Vector2.left, p.topMiddle, ref col.left, out col.leftHit, ref col.pLeft);
-		SideCollision(Vector2.left, p.topMiddle * 0.5f, ref col.left, out col.leftHit, ref col.pLeft);
-		SideCollision(Vector2.left, Vector2.zero, ref col.left, out col.leftHit, ref col.pLeft);
-		SideCollision(Vector2.left, -p.topMiddle * 0.5f, ref col.left, out col.leftHit, ref col.pLeft);
-
-		SideCollision(Vector2.right, p.topMiddle, ref col.right, out col.rightHit, ref col.pRight);
-		SideCollision(Vector2.right, p.topMiddle * 0.5f, ref col.right, out col.rightHit, ref col.pRight);
-		SideCollision(Vector2.right, Vector2.zero, ref col.right, out col.rightHit, ref col.pRight);
-		SideCollision(Vector2.right, -p.topMiddle * 0.5f, ref col.right, out col.rightHit, ref col.pRight);
+		SideCollision(Vector2.left, leftSide, out col.left, out col.leftHit, ref col.pLeft);
+		SideCollision(Vector2.right, rightSide, out col.right, out col.rightHit, ref col.pRight);
 
 		CheckCollision(Vector2.up, p.topMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.topHit, ref col.pTop);
 		if (col.topHit && !col.pTop.jumpThrough) {
@@ -70,10 +92,15 @@ public class PlatformerController : MonoBehaviour
 		}
 
 		CheckCollision(Vector2.down, p.bottomMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.bottomHit, ref col.pBottom);
-		if (col.bottomHit && (!col.pBottom.jumpThrough || jumpVelocity <= 0))
-			rigidbody.position += (Vector2.Distance(rcEnd, col.bottomHit.point) - 0.05f) * - Vector2.down;
-
 		if (col.bottomHit) {
+			var distance = Vector2.Distance(rcEnd, col.bottomHit.point);
+			if (!col.pBottom.jumpThrough || (jumpVelocity <= 0 && distance < 0.1f)) {
+				rigidbody.position += (distance - 0.05f) * -Vector2.down;
+				col.bottom = true;
+			}
+		}
+
+		if (col.bottom && col.bottomHit) {
 			var angle = Vector2.Angle(Vector2.up, col.bottomHit.normal);
 			grounded = jumpVelocity <= 0 && angle <= maxSlope;
 		}
