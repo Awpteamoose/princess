@@ -17,7 +17,6 @@ public class PlatformerController : MonoBehaviour
 	private bool grounded;
 	private float jumpVelocity, groundedTime, flyingTime;
 	private CollisionData col;
-	private PointsOfInterest p;
 	
 	[NonSerialized] private int groundMask;
 	[NonSerialized] private Vector2 rcStart, rcEnd;
@@ -78,7 +77,6 @@ public class PlatformerController : MonoBehaviour
 	}
 
 	private void FixedUpdate () {
-		p.Acquire(collider);
 		col.Reset();
 		grounded = false;
 		var move = new Vector2();
@@ -86,12 +84,12 @@ public class PlatformerController : MonoBehaviour
 		SideCollision(Vector2.left, leftSide, out col.left, out col.leftHit, ref col.pLeft);
 		SideCollision(Vector2.right, rightSide, out col.right, out col.rightHit, ref col.pRight);
 
-		CheckCollision(Vector2.up, p.topMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.topHit, ref col.pTop);
+		CheckCollision(Vector2.up, Vector2.up * collider.size.y * 0.25f, collider.size.y * 0.25f + 0.05f, out col.topHit, ref col.pTop);
 		if (col.topHit && !col.pTop.jumpThrough) {
 			rigidbody.position += (Vector2.Distance(rcEnd, col.topHit.point) - 0.025f) * - Vector2.down;
 		}
 
-		CheckCollision(Vector2.down, p.bottomMiddle * 0.5f, (p.height * 0.25f) + 0.05f, out col.bottomHit, ref col.pBottom);
+		CheckCollision(Vector2.down, Vector2.down * collider.size.y * 0.25f, collider.size.y * 0.25f + 0.05f, out col.bottomHit, ref col.pBottom);
 		if (col.bottomHit) {
 			var distance = Vector2.Distance(rcEnd, col.bottomHit.point);
 			if (!col.pBottom.jumpThrough || (jumpVelocity <= 0 && distance < 0.1f)) {
@@ -160,28 +158,6 @@ public class PlatformerController : MonoBehaviour
 			pRight = null;
 			pTop = null;
 			pBottom = null;
-		}
-	}
-
-	private struct PointsOfInterest {
-		public Vector2 topLeft, topMiddle, topRight, rightMiddle, bottomRight, bottomMiddle, bottomLeft, leftMiddle;
-		public float width, height;
-
-		public void Acquire(BoxCollider2D collider) {
-			width = collider.size.x;
-			height = collider.size.y;
-
-			topMiddle = Vector2.up * height * 0.5f;
-			rightMiddle = Vector2.right * width * 0.5f;
-
-			bottomMiddle = -topMiddle;
-			leftMiddle = -rightMiddle;
-
-			topLeft = topMiddle + leftMiddle;
-			topRight = topMiddle + rightMiddle;
-
-			bottomLeft = bottomMiddle + leftMiddle;
-			bottomRight = bottomMiddle + rightMiddle;
 		}
 	}
 }
