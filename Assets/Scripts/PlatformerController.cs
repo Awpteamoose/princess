@@ -38,15 +38,12 @@ public class PlatformerController : MonoBehaviour
 		pdata = hit.transform.GetComponent<PlatformData>();
 	}
 
-	private void SideCollision(Vector2 side, Rigidbody2D sideBody, out bool constrained, out RaycastHit2D collision, ref PlatformData pdata) {
+	private void SideCollision(Vector2 side, Rigidbody2D sideBody, ref bool constrained, out RaycastHit2D collision, ref PlatformData pdata) {
 		var results = new RaycastHit2D[20];
 		var hits = sideBody.Cast(side, results, 0);
 		var maxPenetration = 0f;
 
-		// Assume there's no collision by default
-		constrained = false;
 		collision = results[0];
-		pdata = null;
 
 		for (var i = 0; i < hits; i++) {
 			var hit = results[i];
@@ -81,8 +78,8 @@ public class PlatformerController : MonoBehaviour
 		grounded = false;
 		var move = new Vector2();
 
-		SideCollision(Vector2.left, leftSide, out col.left, out col.leftHit, ref col.pLeft);
-		SideCollision(Vector2.right, rightSide, out col.right, out col.rightHit, ref col.pRight);
+		SideCollision(Vector2.left, leftSide, ref col.left, out col.leftHit, ref col.pLeft);
+		SideCollision(Vector2.right, rightSide, ref col.right, out col.rightHit, ref col.pRight);
 
 		CheckCollision(Vector2.up, Vector2.up * collider.size.y * 0.25f, collider.size.y * 0.25f + 0.05f, out col.topHit, ref col.pTop);
 		if (col.topHit && !col.pTop.jumpThrough) {
