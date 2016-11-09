@@ -17,9 +17,19 @@ public class PlatformerController : MonoBehaviour
 	private bool grounded;
 	private float jumpVelocity, groundedTime, flyingTime;
 	private CollisionData col;
+	private State state;
+	private float attackTime;
 	
 	[NonSerialized] private int groundMask;
 	[NonSerialized] private Vector2 rcStart, rcEnd;
+
+	private enum State {
+		IDLE,
+		RUN,
+		RISE,
+		FALL,
+		ATTACK
+	}
 
 	private void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
@@ -111,33 +121,46 @@ public class PlatformerController : MonoBehaviour
 		}
 
 		if (grounded) {
-			animator.SetBool("grounded", true);
+			if (state != State.ATTACK)
+				state = State.IDLE;
 			flyingTime = 0;
 			groundedTime += Time.fixedDeltaTime;
 		} else {
 			move += Vector2.up * Time.fixedDeltaTime * jumpVelocity;
 			jumpVelocity -= gravity * Time.fixedDeltaTime;
-			animator.SetBool("rising", jumpVelocity > 0);
-			animator.SetBool("grounded", false);
+			if (state != State.ATTACK)
+				state = jumpVelocity > 0 ? State.RISE : State.FALL;
 			groundedTime = 0;
 			flyingTime += Time.fixedDeltaTime;
 		}
 
-		if (Input.GetKey(KeyCode.RightArrow)) {
-			if (!col.right)
-				move += Vector2.right * Time.fixedDeltaTime * speed;
-			sprite.flipX = true;
-			animator.SetBool("running", true);
-		} else if (Input.GetKey(KeyCode.LeftArrow)) {
-			if (!col.left)
-				move += Vector2.left * Time.fixedDeltaTime * speed;
-			sprite.flipX = false;
-			animator.SetBool("running", true);
+		if (Input.GetKey(KeyCode.X) && state != State.ATTACK) {
+			state = State.ATTACK;
+			attackTime = 0.417f;
+		}
+
+		if (state != State.ATTACK) {
+			if (Input.GetKey(KeyCode.RightArrow)) {
+				if (!col.right)
+					move += Vector2.right * Time.fixedDeltaTime * speed;
+				sprite.flipX = true;
+				if (state == State.IDLE)
+					state = State.RUN;
+			} else if (Input.GetKey(KeyCode.LeftArrow)) {
+				if (!col.left)
+					move += Vector2.left * Time.fixedDeltaTime * speed;
+				sprite.flipX = false;
+				if (state == State.IDLE)
+					state = State.RUN;
+			}
 		} else {
-			animator.SetBool("running", false);
+			attackTime -= Time.fixedDeltaTime;
+			if (attackTime <= 0)
+				state = State.IDLE;
 		}
 
 		rigidbody.MovePosition(rigidbody.position + move);
+		animator.SetInteger("state", (int)state);
 	}
 
 	private struct CollisionData {
