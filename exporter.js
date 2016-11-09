@@ -3,34 +3,25 @@
 var exec = require('child_process').execSync;
 var fs = require('fs');
 var settings = JSON.parse(fs.readFileSync('exporter_config.json', 'utf8'));
-settings.aseprite = '"' + settings.aseprite + '"'; // Avoiding whitespace in filepaths
 
-for (var sprite_n = 0; sprite_n < settings.sprites.length; sprite_n++)
-{
-	var sprite = settings.sprites[sprite_n];
-	var sprite_path = '"' + sprite + '.ase"'; // Again, avoiding whitespace
-	var sprite_real_name = sprite.match(/\\\w+/)[0].replace("\\", "").replace(" ", "_"); // Trying to get rid of subdirectories
+if (fs.existsSync(settings.output))
+	exec(`rm -rf ${settings.output}`);
 
-	// Output folder to put exported sprites into
-	if (!fs.existsSync(settings.output))
-		fs.mkdirSync(settings.output)
+settings.sprites.forEach((sprite) => {
+	sprite = ('"' + sprite + '"').match(/(?:")(.+)(?:\\)(.+)(?:")/);
 
-	// Each sprite gets its own subfolder
-	var path = settings.output + "\\" + sprite_real_name;
-	if (fs.existsSync(path)) {
-		exec("rm -rf " + path);
-	}
-	fs.mkdirSync(path);
+	var sprite_folder = sprite[1];
+	var sprite_name = sprite[2];
+	var out_sprite_folder = `${settings.output}\\${sprite_folder}\\${sprite_name}`;
+	console.log(exec(`mkdir "${out_sprite_folder}"`).toString());
 
-	var tags = exec(settings.aseprite + " -b --list-tags " + sprite_path).toString().split("\r\n"); // Array of sprite tags
+	var tags = exec(`${settings.aseprite} -b --list-tags "${sprite_folder}\\${sprite_name}.ase"`).toString().split("\r\n"); // Array of sprite tags
 	tags.pop(); // Last one is empty
 
-	for (var i = 0; i < tags.length; i++)
-	{
-		var tag = tags[i];
+	tags.forEach((tag) => {
 		console.log("Exporting with tag '" + tag + "'...");
-		var target = '"' + settings.output + "\\" + sprite_real_name + "\\" + tag.replace(" ", "_") + '_001.png"'; // Something like "out\princess\Idle_00X.png"
-		console.log(settings.aseprite + " -b --frame-tag " + tag + " " + sprite_path + " --save-as " + target);
-		console.log(exec(settings.aseprite + " -b --frame-tag " + tag + " " + sprite_path + " --save-as " + target).toString());
-	}
-}
+		var target = `${out_sprite_folder}\\${tag.replace(' ', '_')}_001.png`;
+		console.log(     `"${settings.aseprite}" -b --frame-tag ${tag} "${sprite_folder}\\${sprite_name}.ase" --save-as "${target}"`);
+		console.log(exec(`"${settings.aseprite}" -b --frame-tag ${tag} "${sprite_folder}\\${sprite_name}.ase" --save-as "${target}"`).toString());
+	});
+});
