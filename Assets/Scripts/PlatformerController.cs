@@ -9,6 +9,7 @@ public class PlatformerController : MonoBehaviour
 	public float maxSlope;
 	public SpriteRenderer sprite;
 	public Rigidbody2D leftSide, rightSide;
+	public Rigidbody2D attack;
 
 	private new Rigidbody2D rigidbody;
 	private Animator animator;
@@ -114,15 +115,22 @@ public class PlatformerController : MonoBehaviour
 			jumpVelocity = Mathf.Min(jumpVelocity, 0);
 		} else if (grounded) {
 			jumpVelocity = 0;
-			if (Input.GetKey(KeyCode.Z)) {
+			if (Input.GetKey(KeyCode.Z) && state != State.ATTACK) {
 				jumpVelocity = jumpPower;
 				grounded = false;
 			}
 		}
 
 		if (grounded) {
-			if (state != State.ATTACK)
+			if (state != State.ATTACK) {
 				state = State.IDLE;
+				if (Input.GetKey(KeyCode.X)) {
+					state = State.ATTACK;
+					attackTime = 0.417f;
+					attack.gameObject.SetActive(true);
+					attack.transform.localPosition = new Vector3(sprite.flipX ? 0.5f : -0.5f, 0, 0);
+				}
+			}
 			flyingTime = 0;
 			groundedTime += Time.fixedDeltaTime;
 		} else {
@@ -132,11 +140,6 @@ public class PlatformerController : MonoBehaviour
 				state = jumpVelocity > 0 ? State.RISE : State.FALL;
 			groundedTime = 0;
 			flyingTime += Time.fixedDeltaTime;
-		}
-
-		if (Input.GetKey(KeyCode.X) && state != State.ATTACK) {
-			state = State.ATTACK;
-			attackTime = 0.417f;
 		}
 
 		if (state != State.ATTACK) {
@@ -155,8 +158,13 @@ public class PlatformerController : MonoBehaviour
 			}
 		} else {
 			attackTime -= Time.fixedDeltaTime;
-			if (attackTime <= 0)
+			if (attackTime <= 0) {
 				state = State.IDLE;
+				attack.gameObject.SetActive(false);
+			}
+
+			var results = new RaycastHit2D[20];
+			var hits = attack.Cast(sprite.flipX ? Vector2.right : Vector2.left, results, 0);
 		}
 
 		rigidbody.MovePosition(rigidbody.position + move);

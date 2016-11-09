@@ -1736,6 +1736,67 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f5e4483b5924b84d9f2bf5f6f27d7a8, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &682143651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 682143652}
+  - 61: {fileID: 682143653}
+  - 50: {fileID: 682143654}
+  m_Layer: 0
+  m_Name: attack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &682143652
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 682143651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 2.5, y: 2, z: 2}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 701168229}
+  m_RootOrder: 6
+--- !u!61 &682143653
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 682143651}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+--- !u!50 &682143654
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 682143651}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &701168228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1832,7 @@ Transform:
   - {fileID: 1952829661}
   - {fileID: 1801837876}
   - {fileID: 1029511372}
+  - {fileID: 682143652}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!114 &701168230
@@ -1791,6 +1853,7 @@ MonoBehaviour:
   sprite: {fileID: 848118516}
   leftSide: {fileID: 1308247268}
   rightSide: {fileID: 1952829663}
+  attack: {fileID: 682143654}
 --- !u!50 &701168231
 Rigidbody2D:
   serializedVersion: 2
