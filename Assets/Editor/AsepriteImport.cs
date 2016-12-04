@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -52,42 +53,43 @@ public class AsepriteImport {
 	[MenuItem("Assets/Aseprite import")]
 	static void Import() {
 		var path = AssetDatabase.GetAssetPath(Selection.activeObject);
+		var thisFolder = Path.GetDirectoryName(path);
+		var folderAbove = Path.GetDirectoryName(thisFolder);
 		var json = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
 		var data = JsonUtility.FromJson<AsepriteData>(json.text);
 
 		foreach (var anim in data.meta.frameTags) {
-			Debug.Log("WORKING ON ANIMATION " + anim.name);
 			var clip = new AnimationClip();
-			EditorCurveBinding curveBinding = new EditorCurveBinding();
-			curveBinding.type = typeof(SpriteRenderer);
-			curveBinding.path = "";
-			curveBinding.propertyName = "sprite";
+			clip.wrapMode = WrapMode.Once;
+			clip.frameRate = 60;
 
-			// An array to hold the object keyframes
-			ObjectReferenceKeyframe[] keyFrames = new ObjectReferenceKeyframe[10];
-
-			for (int i = 0; i < 10; i++) {
-				keyFrames[i] = new ObjectReferenceKeyframe();
-				// set the time
-				keyFrames[i].time = timeForKey(i);
-				// set reference for the sprite you want
-				keyFrames[i].value = spriteForKey(i);
-
-			}
-
-			AnimationUtility.SetObjectReferenceCurve(animClip, curveBinding, keyFrames);
+			var keyframes = new ObjectReferenceKeyframe[anim.to - anim.from + +1];
+			float time = 0;
 			for (var i = anim.from; i <= anim.to; i++) {
 				var frame = data.frames[i];
-				var spritename = anim.name + "_" + (i - anim.from + 1).ToString("D3") + ".png";
-				Debug.Log("Actual file name: " + spritename + ", duration " + frame.duration);
+				var relativeIndex = i - anim.from;
+				var spritename = anim.name + "_" + (relativeIndex + 1).ToString("D3") + ".png";
+				var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(thisFolder + "/" + spritename);
+				keyframes[relativeIndex] = new ObjectReferenceKeyframe {
+					time = time,
+					value = sprite
+				};
+				time = time + (frame.duration / 1000.0f);
 			}
-			AssetDatabase.CreateAsset(clip, "Assets/TEST/" + anim.name + ".anim");
+			var refCurve = new EditorCurveBinding {
+				type = typeof(SpriteRenderer),
+				path = "",
+				propertyName = "m_Sprite"
+			};
+			AnimationUtility.SetObjectReferenceCurve(clip, refCurve, keyframes);
+			AssetDatabase.CreateAsset(clip, folderAbove + "/" + anim.name + ".anim");
 		}
 		AssetDatabase.SaveAssets();
 	}
 
 	[MenuItem("Assets/Aseprite import", true)]
 	private static bool NewMenuOptionValidation() {
+		if (!Selection.activeObject) return false;
 		return Selection.activeObject.GetType() == typeof(TextAsset);
 	}
 }
