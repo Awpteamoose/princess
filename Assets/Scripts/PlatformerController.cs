@@ -126,7 +126,7 @@ public class PlatformerController : MonoBehaviour
 				state = State.IDLE;
 				if (Input.GetKey(KeyCode.X)) {
 					state = State.ATTACK;
-					attackTime = 0.417f;
+					attackTime = 0.717f;
 					attack.gameObject.SetActive(true);
 					attack.transform.localPosition = new Vector3(sprite.flipX ? 0.5f : -0.5f, 0, 0);
 				}
