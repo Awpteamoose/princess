@@ -1,0 +1,213 @@
+{ "frames": [
+   {
+    "filename": "monsterall 0.ase",
+    "frame": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 1.ase",
+    "frame": { "x": 74, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 200
+   },
+   {
+    "filename": "monsterall 2.ase",
+    "frame": { "x": 148, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 3.ase",
+    "frame": { "x": 222, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 4.ase",
+    "frame": { "x": 296, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 150
+   },
+   {
+    "filename": "monsterall 5.ase",
+    "frame": { "x": 370, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 6.ase",
+    "frame": { "x": 444, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 7.ase",
+    "frame": { "x": 518, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 8.ase",
+    "frame": { "x": 592, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 9.ase",
+    "frame": { "x": 666, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 10.ase",
+    "frame": { "x": 740, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 11.ase",
+    "frame": { "x": 814, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 200
+   },
+   {
+    "filename": "monsterall 12.ase",
+    "frame": { "x": 888, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 13.ase",
+    "frame": { "x": 962, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 14.ase",
+    "frame": { "x": 1036, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 200
+   },
+   {
+    "filename": "monsterall 15.ase",
+    "frame": { "x": 1110, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 16.ase",
+    "frame": { "x": 1184, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 17.ase",
+    "frame": { "x": 1258, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 18.ase",
+    "frame": { "x": 1332, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 19.ase",
+    "frame": { "x": 1406, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 20.ase",
+    "frame": { "x": 1480, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   },
+   {
+    "filename": "monsterall 21.ase",
+    "frame": { "x": 1554, "y": 0, "w": 74, "h": 46 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 74, "h": 46 },
+    "sourceSize": { "w": 74, "h": 46 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2-beta3",
+  "format": "RGBA8888",
+  "size": { "w": 1628, "h": 46 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Idle", "from": 0, "to": 11, "direction": "forward" },
+   { "name": "Run", "from": 12, "to": 16, "direction": "forward" },
+   { "name": "Attack", "from": 17, "to": 21, "direction": "forward" }
+  ]
+ }
+}
