@@ -17,6 +17,7 @@ settings.sprites.forEach((sprite) => {
 
 	var tags = exec(`${settings.aseprite} -b --list-tags "${sprite_folder}\\${sprite_name}.ase"`).toString().split("\r\n"); // Array of sprite tags
 	tags.pop(); // Last one is empty
+	console.log(exec(`${settings.aseprite} -b --data "${out_sprite_folder}\\${sprite_name}.json" --format json-array --list-tags "${sprite_folder}\\${sprite_name}.ase"`).toString());
 
 	tags.forEach((tag) => {
 		console.log("Exporting with tag '" + tag + "'...");
