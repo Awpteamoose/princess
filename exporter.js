@@ -2,7 +2,7 @@
 "use strict";
 var exec = require('child_process').execSync;
 var fs = require('fs');
-var settings = JSON.parse(fs.readFileSync('exporter_config.json', 'utf8'));
+var settings = require('./exporter_config.json');
 
 if (fs.existsSync(settings.output))
 	exec(`rm -rf ${settings.output}`);
