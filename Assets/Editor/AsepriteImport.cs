@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEditor.Animations;
 
 public class AsepriteImport {
 	[Serializable]
@@ -57,10 +58,12 @@ public class AsepriteImport {
 		var folderAbove = Path.GetDirectoryName(thisFolder);
 		var json = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
 		var data = JsonUtility.FromJson<AsepriteData>(json.text);
+		var controller = AnimatorController.CreateAnimatorControllerAtPath(folderAbove + "/" + new DirectoryInfo(folderAbove).Name + ".anim");
+		var stateMachine = controller.layers[0].stateMachine;
 
 		foreach (var anim in data.meta.frameTags) {
 			var clip = new AnimationClip();
-			clip.wrapMode = WrapMode.Once;
+			clip.wrapMode = WrapMode.Loop;
 			clip.frameRate = 60;
 
 			var keyframes = new ObjectReferenceKeyframe[anim.to - anim.from + +1];
@@ -83,6 +86,8 @@ public class AsepriteImport {
 			};
 			AnimationUtility.SetObjectReferenceCurve(clip, refCurve, keyframes);
 			AssetDatabase.CreateAsset(clip, folderAbove + "/" + anim.name + ".anim");
+			var state = stateMachine.AddState(anim.name);
+			state.motion = clip;
 		}
 		AssetDatabase.SaveAssets();
 	}
