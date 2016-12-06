@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformerController : MonoBehaviour
@@ -31,6 +32,14 @@ public class PlatformerController : MonoBehaviour
 		FALL,
 		ATTACK
 	}
+
+	private Dictionary<State, string> states = new Dictionary<State, string>{
+		{ State.IDLE, "Idle" },
+		{ State.RUN, "Run" },
+		{ State.FALL, "Fall" },
+		{ State.RISE, "Rise" },
+		{ State.ATTACK, "hit1" }
+	};
 
 	private void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
@@ -168,7 +177,7 @@ public class PlatformerController : MonoBehaviour
 		}
 
 		rigidbody.MovePosition(rigidbody.position + move);
-		animator.SetInteger("state", (int)state);
+		animator.Play(states[state]);
 	}
 
 	private struct CollisionData {
